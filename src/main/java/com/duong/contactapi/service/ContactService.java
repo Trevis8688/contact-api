@@ -18,6 +18,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static com.duong.contactapi.constants.Constant.PHOTO_DIRECTORY;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 @Service
@@ -64,20 +65,20 @@ public class ContactService {
 
     /**
      * Updates a contact's photo
-     * @param id of the contact to update
-     * @param file of photo
-     * @return
+     * @param id the contact to update
+     * @param file the photo file
+     * @return the URL of the photo that was uploaded
      */
     public String uploadPhoto(String id, MultipartFile file){
         Contact contact = getContact(id);
-        String photoUrl = null;
+        String photoUrl = photoFunction.apply(id, file);
         contact.setPhotoURL(photoUrl);
         repo.save(contact);
         return photoUrl;
     }
 
     /**
-     * Helper unction that takes a file name as a String
+     * Helper function that takes a file name as a String
      * and returns the file extension as a String
      */
     private final Function<String, String> getFileExtension = (fileName) ->
@@ -87,15 +88,16 @@ public class ContactService {
                     .orElse(".png");
 
     /**
-     * Defines a BiFunction object (that acts as a function) that takes a String and File
+     * Defines a BiFunction that takes a String and File
      * as input and returns a String
-     * Helper function that
+     * Helper function that takes the id profile picture of a contact
+     * and adds it to
      */
     public final BiFunction<String, MultipartFile, String> photoFunction = (id, image) -> {
         String fileName = id + getFileExtension.apply(image.getOriginalFilename());
         try {
             // Set up the file storage location
-            Path fileStorageLocation = Paths.get("")
+            Path fileStorageLocation = Paths.get(PHOTO_DIRECTORY)
                     .toAbsolutePath()
                     .normalize();
 
