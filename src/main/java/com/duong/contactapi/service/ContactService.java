@@ -47,7 +47,7 @@ public class ContactService {
     }
 
     /**
-     * Adds new contact to respoitory
+     * Adds new contact to repository
      * @param contact to add
      * @return the contact that was saved
      */
@@ -111,7 +111,7 @@ public class ContactService {
 
             // Return the file's URI as a string
             return ServletUriComponentsBuilder.fromCurrentContextPath()
-                    .path("/contacts/images/" + id + getFileExtension.apply(image.getOriginalFilename()))
+                    .path("/Springboot/ContactPhotos/" + id + getFileExtension.apply(image.getOriginalFilename()))
                     .toUriString();
 
         } catch (Exception e) {

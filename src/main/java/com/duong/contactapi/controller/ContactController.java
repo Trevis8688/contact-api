@@ -18,9 +18,10 @@ import static org.springframework.http.MediaType.IMAGE_JPEG_VALUE;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 
 @RestController
+@RequestMapping("/contacts")
 @RequiredArgsConstructor //dependency injection for service
 public class ContactController {
-    private ContactService service;
+    private final ContactService service;
 
     /**
      * Mapping to handle HTTP post request to create new contact
@@ -29,7 +30,7 @@ public class ContactController {
      */
     @PostMapping
     public ResponseEntity<Contact> createContact(@RequestBody Contact contact) {
-        return ResponseEntity.created(URI.create("/contacts/" + contact.getId())).body(service.createContact(contact));
+        return ResponseEntity.created(URI.create("/contacts/userID")).body(service.createContact(contact));
     }
 
     /**
@@ -42,7 +43,7 @@ public class ContactController {
     @GetMapping
     public ResponseEntity<Page<Contact>> getContacts(@RequestParam(value = "page", defaultValue = "0") int page,
                                                      @RequestParam(value = "size", defaultValue = "10") int size) {
-        return ResponseEntity.ok().body(service.getAllContact(0, 10));
+        return ResponseEntity.ok().body(service.getAllContact(page, size));
     }
 
     /**
@@ -77,6 +78,6 @@ public class ContactController {
      */
     @GetMapping(path = "/image/{filename}", produces = {IMAGE_PNG_VALUE, IMAGE_JPEG_VALUE})
     public byte[] getPhoto(@PathVariable("filename") String filename) throws IOException {
-        return Files.readAllBytes(Paths.get(PHOTO_DIRECTORY + filename));
+        return Files.readAllBytes(Paths.get(PHOTO_DIRECTORY + "/" + filename));
     }
 }

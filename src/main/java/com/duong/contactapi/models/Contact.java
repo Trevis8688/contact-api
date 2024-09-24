@@ -13,7 +13,7 @@ import org.hibernate.annotations.UuidGenerator;
 @NoArgsConstructor
 @AllArgsConstructor
 //Only sends non default values to front (for strings won't send null since null is default)
-@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+//@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 @Table(name = "contact")
 public class Contact {
     @Id
